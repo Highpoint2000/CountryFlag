@@ -2,7 +2,8 @@
 
 This plugin for the FMDX web server displays the country flag below the TX station data.
 
-![image](https://github.com/user-attachments/assets/d6f84f67-be91-4e74-9e1a-93e884d790a5)
+<img width="1179" height="506" alt="image" src="https://github.com/user-attachments/assets/6b43a5b1-326a-4bce-8dd8-6ff691c08b1b" />
+
 
 ## v1.0
 
@@ -21,10 +22,10 @@ This plugin for the FMDX web server displays the country flag below the TX stati
 
 The following variables can be changed in the header of the countryflag.js:
 
-    const blurAmount = '5px';  // Blur strength (e.g. '5px', '0px' for sharp / default: '5px')
-    const opacity = '0.30'; // Opacity of the background (0.0 - 1.0 / default: '0.30')
-    const animationEnabled = true;   // Enable/Disable waving animation (true/false)
-    const waveStrength = 3.0;    // Intensity of the wave (0.5 = subtle, 3.0 = strong / default: 3.0)
+     const blurAmount = '5px';      // Blur strength (e.g. '5px', '0px' for sharp / default: '5px')
+     const opacity = '0.30';        // Opacity of the background (0.0 - 1.0 / default: '0.30')
+     const animationEnabled = true; // Enable/Disable waving animation (true/false)
+     const waveStrength = 3.0;      // Intensity of the wave (0.5 = subtle, 3.0 = strong / default: 3.0)
 
 ## Contact
 
