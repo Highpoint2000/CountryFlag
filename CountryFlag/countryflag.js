@@ -3,7 +3,7 @@
 ///                                                       ///
 ///  COUNTRY FLAG PLUGIN FOR FM-DX-WEBSERVER (V1.0)       ///
 ///                                                       /// 
-///  by Highpoint               last update: 02.12.2025   ///
+///  by Highpoint               last update: 03.12.2025   ///
 ///                                                       ///
 /////////////////////////////////////////////////////////////
 
@@ -25,11 +25,11 @@
     // --- Update Settings ---
     const checkForUpdates =      true;
     const pluginName =           'Country Flag';
-    const pluginUpdateUrl =      'https://raw.githubusercontent.com/Highpoint2000/CountryFlag/main/js/plugins/CountryFlag/countryflag.js';
+    const pluginUpdateUrl =      'https://raw.githubusercontent.com/Highpoint2000/CountryFlag/refs/heads/main/CountryFlag/countryflag.js';
     const pluginHomepageUrl =    'https://github.com/Highpoint2000/CountryFlag/releases';
 
 
-    console.log(`Plugin loaded: ${pluginName} v${plugin_version} (Cached & Stable)`);
+    console.log(`Plugin loaded: ${pluginName} v${plugin_version} (Multi-Word Support)`);
 
     // --- CACHE SPEICHER ---
     const imageCache = {};
@@ -39,7 +39,6 @@
         const styleId = 'station-flag-bg-styles';
         if (document.getElementById(styleId)) return;
 
-        // Nutzung der neuen Einzelvariablen
         const s = waveStrength;
         const skew = 0.5 * s;
         const scaleBase = 1.1;       
@@ -151,17 +150,41 @@
     }
 
     // --- URL & CACHE LOGIC ---
-    function getFlagUrl(ituCode) {
+    function getFlagUrl(ituRawText) {
         if (typeof countryList === 'undefined' || !Array.isArray(countryList)) return null;
-        const countryData = countryList.find(country => country.itu_code === ituCode.toUpperCase());
         
+        // 1. String zerlegen: Komma und Leerzeichen als Trenner
+        // Filter entfernt leere Einträge, falls doppelte Leerzeichen vorkommen.
+        // Beispiel: "Kentucky, USA" -> ["Kentucky", "USA"]
+        const parts = ituRawText.split(/[\s,]+/).filter(s => s.length > 0);
+        
+        let countryData = null;
+        let matchedPart = '';
+
+        // 2. Teile einzeln prüfen
+        for (const part of parts) {
+            const searchCode = part.toUpperCase();
+            const match = countryList.find(country => country.itu_code === searchCode);
+            
+            if (match) {
+                countryData = match;
+                matchedPart = searchCode;
+                break; // Sobald wir einen Treffer haben, hören wir auf
+            }
+        }
+
+        // 3. Ergebnis auswerten
         let url = null;
         if (countryData) {
+            console.log(`[${pluginName}] ITU Input: "${ituRawText}" -> Matched: "${matchedPart}" -> Country: ${countryData.country_code}`);
+
             if (countryData.country_code && countryData.country_code !== '') {
                 url = `https://flagcdn.com/w640/${countryData.country_code.toLowerCase()}.png`;
             } else {
-                url = `https://tef.noobish.eu/logos/images/${ituCode.toUpperCase()}.png`;
+                url = `https://tef.noobish.eu/logos/images/${matchedPart}.png`;
             }
+        } else {
+            console.log(`[${pluginName}] ITU Input: "${ituRawText}" -> No matching country found in parts: [${parts.join(', ')}]`);
         }
 
         if (url) {
@@ -200,26 +223,19 @@
             return;
         }
 
-        if (typeof countryList !== 'undefined' && Array.isArray(countryList)) {
-            const isValid = countryList.some(c => c.itu_code === ituCode.toUpperCase());
-            if (!isValid) {
-                wrapper.style.opacity = '0';
-                return; 
-            }
-        }
-
         if (ituCode !== lastValidItu) {
+            // getFlagUrl enthält jetzt die Logik zum Splitten und Finden
             const flagUrl = getFlagUrl(ituCode);
             
             if (flagUrl) {
                 imgElement.style.backgroundImage = `url('${flagUrl}')`;
-                wrapper.style.opacity = opacity; // Hier die Variable genutzt
+                wrapper.style.opacity = opacity; 
                 lastValidItu = ituCode;
             } else {
                 wrapper.style.opacity = '0';
             }
         } else if (wrapper.style.opacity === '0') {
-             wrapper.style.opacity = opacity; // Hier die Variable genutzt
+             wrapper.style.opacity = opacity; 
         }
     }
 
@@ -363,7 +379,7 @@
                     setTimeout(check, 100);
                 } else {
                     if (typeof countryList === 'undefined') {
-                         $.getScript(countryListUrl) // Hier die Variable genutzt
+                         $.getScript(countryListUrl) 
                             .done(() => { startPlugin(); })
                             .fail(() => { console.error("Failed to load countryList"); });
                     } else {
