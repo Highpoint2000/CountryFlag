@@ -22,10 +22,23 @@ This plugin for the FMDX web server displays the country flag below the TX stati
 
 The following variables can be changed in the header of the countryflag.js:
 
-     const blurAmount = '5px';      // Blur strength (e.g. '5px', '0px' for sharp / default: '5px')
-     const opacity = '0.30';        // Opacity of the background (0.0 - 1.0 / default: '0.30')
-     const animationEnabled = true; // Enable/Disable waving animation (true/false)
-     const waveStrength = 3.0;      // Intensity of the wave (0.5 = subtle, 3.0 = strong / default: 3.0)
+     const blurAmount = '5px';       // Blur strength (e.g. '5px', '0px' for sharp / default: '5px')
+     const opacity = '0.30';         // Opacity of the background (0.0 - 1.0 / default: '0.30')
+     const animationEnabled = true;  // Enable/Disable waving animation (true/false)
+     const waveStrength = 3.0;       // Intensity of the wave (0.5 = subtle, 3.0 = strong / default: 3.0)
+
+<img width="271" height="118" alt="Screenshot 2025-12-03 105527" src="https://github.com/user-attachments/assets/5252d39c-8766-4038-a88b-e8e2d0fa1cd9" />
+
+
+For example, the following settings are recommended for the USA:
+
+     const blurAmount = '1px';       // Blur strength (e.g. '5px', '0px' for sharp / default: '5px')
+     const opacity = '0.40';         // Opacity of the background (0.0 - 1.0 / default: '0.30')
+     const animationEnabled = false; // Enable/Disable waving animation (true/false)
+     const waveStrength = 3.0;       // Intensity of the wave (0.5 = subtle, 3.0 = strong / default: 3.0)
+
+<img width="271" height="118" alt="Screenshot 2025-12-03 105439" src="https://github.com/user-attachments/assets/175799ec-2163-4943-b184-5efab64930da" />
+
 
 ## Contact
 
